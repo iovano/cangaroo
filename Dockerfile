@@ -1,32 +1,25 @@
-FROM ubuntu:latest
+# Use the official Node.js 14 image as the base image
+FROM node:latest
 
-RUN apt-get update && \
-    apt-get install -y apache2 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Set the working directory inside the container
+WORKDIR /app
 
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
+COPY . .
 
-# Set the document root directory
-ENV APACHE_DOCUMENT_ROOT /var/www/html
+# Install dependencies
+# RUN apt-get update && apt-get install -y git yarn
+# RUN npm install -g yarn
+# RUN yarn init -y
+RUN yarn add webpack webpack-cli svelte webpack-dev-server express html-webpack-plugin clean-webpack-plugin
+RUN yarn add svelte-loader css-loader style-loader
 
-# Enable the required Apache modules
-RUN a2enmod rewrite && \
-    a2enmod headers && \
-    a2enmod ssl && \
-    a2enmod proxy && \
-    a2enmod proxy_http && \
-    a2enmod proxy_balancer && \
-    a2enmod lbmethod_byrequests
+RUN yarn install
 
-# Mount the current directory as the document root
-VOLUME /var/www/html
-WORKDIR /var/www/html
+# Install the dependencies
+RUN yarn build
 
-# Expose port 80 for HTTP traffic
-EXPOSE 80
+# Expose port 3000
+EXPOSE 3000
 
-# Start Apache2 server in the foreground
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# Set the command to run the node server
+CMD ["node", "app.js"]
