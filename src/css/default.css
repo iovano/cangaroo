@@ -1,6 +1,9 @@
 body {
-    background-color: #202;
+    background-color: #faf;
 }
 h1, h2, h3 {
-    color: #faf;
+    color: #202;
+}
+canvas {
+    border: 1px solid #fff;
 }
