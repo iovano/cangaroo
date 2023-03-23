@@ -10,14 +10,9 @@ COPY . .
 # RUN apt-get update && apt-get install -y git yarn
 # RUN npm install -g yarn
 # RUN yarn init -y
-RUN yarn add webpack webpack-cli svelte webpack-dev-server express html-webpack-plugin clean-webpack-plugin
-RUN yarn add svelte-loader css-loader style-loader
+RUN yarn add express
 
 RUN yarn install
-
-# Install the dependencies
-RUN yarn build
-
 # Expose port 3000
 EXPOSE 3000
 

@@ -6,10 +6,6 @@
     "url": "https://github.com/iovano/cangaroo.git",
     "type": "git"
   },
-  "scripts": {
-    "build": "webpack",
-    "start": "./node_modules/.bin/webpack-dev-server"
-  },
   "author": "Timor Kodal",
   "license": "MIT"
 
