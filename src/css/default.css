@@ -1,9 +1,16 @@
 body {
-    background-color: #faf;
+    background: rgb(238,0,180);
+    background: linear-gradient(180deg, rgba(238,0,180,1) 0%, rgba(121,9,81,1) 92%, rgba(32,0,51,1) 95%);
+    min-height: 100vh;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 h1, h2, h3 {
     color: #202;
 }
 canvas {
-    border: 1px solid #fff;
+    border: none;
+}
+.highlight {
+    color: #faf;
+    font-weight: 400;
 }

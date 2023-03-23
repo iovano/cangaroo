@@ -3,7 +3,7 @@ class Screen {
     cHeight = 250;
     frame = 0;
     sprites = [];
-    spritesAmount = 10;
+    spritesAmount = 50;
     canvas = null;
     imgData = null;
     collisionDetectionMethod = 2
