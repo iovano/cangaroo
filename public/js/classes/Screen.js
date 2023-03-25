@@ -10,6 +10,7 @@ class Screen {
     canvas = null;
     collisionDetectionCallback = null;
     context = null;
+    infinity = true;
     constructor(canvas, defaultSpriteShape = "rect", initSpriteCallback = null, drawSpriteCallback = null, collisionDetectionCallback = null) {
         this.canvas = canvas;
         this.defaultSpriteShape = defaultSpriteShape;
@@ -22,6 +23,9 @@ class Screen {
         this.sprites = [];
         this.canvas = null;
         this.frame = 0;
+    }
+    setInfinity(value) {
+        this.infinity = value;
     }
     init(shape = null, width = null, height = null) {
         if (!shape) shape = this.defaultSpriteShape;
@@ -61,11 +65,25 @@ class Screen {
               }
               s.x += s.sx;
               s.y += s.sy;
-              if (s.x + s.w > this.cWidth && s.sx > 0 || s.x < 0 && s.sx < 0) {
-                  s.sx = -s.sx;
-              }
-              if (s.y + s.h > this.cHeight && s.sy > 0 || s.y < 0 && s.sy < 0) {
-                  s.sy = -s.sy;
+              if (this.infinity) {
+                if (s.x > this.cWidth && s.sx > 0) {
+                    s.x -= this.cWidth + s.w;
+                } else if (s.x < - s.w && s.sx < 0) {
+                    s.x += this.cWidth + s.w;
+                }
+                if (s.y > this.cHeight && s.sy > 0) {
+                    s.y =- this.cHeight + s.h;
+                } else if (s.y < - s.h && s.sy < 0) {
+                    s.y += this.cHeight + s.h;
+                }
+              } else {
+                if (s.x + s.w > this.cWidth && s.sx > 0 || s.x < 0 && s.sx < 0) {
+                    s.sx = -s.sx;
+                }
+                if (s.y + s.h > this.cHeight && s.sy > 0 || s.y < 0 && s.sy < 0) {
+                    s.sy = -s.sy;
+                }
+  
               }
               if (this.drawSpriteCallback) {
                   this.drawSpriteCallback(s);
