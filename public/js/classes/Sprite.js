@@ -19,7 +19,7 @@ class Sprite {
             context.arc(this.x, this.y, this.w / 2, 0, 2 * Math.PI);
             context.fill();
         } else {
-            context.fillRect(this.x, this.y, this.w, this.h);
+            context.fillRect(this.x + this.w / 2, this.y + this.w / 2, this.w, this.h);
 
         }
     }
