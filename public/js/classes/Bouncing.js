@@ -1,35 +1,10 @@
-class Screen {
-    cWidth = 250;
-    cHeight = 250;
-    frame = 0;
-    sprites = [];
-    spritesAmount = 50;
-    canvas = null;
-    imgData = null;
-    collisionDetectionMethod = 2
+import Screen from "./Screen.js";
+class Bouncing extends Screen {
     collisionCallback = null;
-    context = null;
-    constructor(canvas, collisionCallback = null) {
-        this.canvas = canvas;
+    constructor(canvas, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null) {
+        super(canvas, initSpriteCallback, drawSpriteCallback);
+        this.collisionDetectionCallback = this.collision;
         this.collisionCallback = collisionCallback;
-        this.context = this.canvas.getContext("2d", {willReadFrequently: true});
-    }
-    init() {
-        for (let i=0; i<this.spritesAmount; i++) {
-            let sprite = {
-                x: Math.random()*this.cWidth, 
-                y: Math.random()*this.cHeight, 
-                w: 10, 
-                h: 10, 
-                r: Math.random()*255, 
-                g: Math.random()*255, 
-                b: Math.random()*255,
-                a: Math.random()*255,
-                sx: Math.random()*3,
-                sy: Math.random()*3
-            }
-            this.sprites.push(sprite);
-        }
     }
     collision(spriteNum) {
         let s = this.sprites[spriteNum]
@@ -119,39 +94,5 @@ class Screen {
         this.sprites[o2].sy = newVelocity2[1];
  
     }
-    draw() {
-          if (this.canvas.getContext) {
-            const ctx = this.context;
-            ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  
-            for (let i in this.sprites) {
-                let s = this.sprites[i];
-                ctx.fillStyle = "rgba("+s.r+", "+s.g+", "+s.b+", "+s.a+")";
-                if (this.collisionDetectionMethod > 0) {
-                    this.collision(i);
-                }
-                ctx.fillRect(s.x, s.y, s.w, s.h);
-                s.x += s.sx;
-                s.y += s.sy;
-                if (s.x + s.w > this.cWidth && s.sx > 0 || s.x < 0 && s.sx < 0) {
-                    s.sx = -s.sx;
-                }
-                if (s.y + s.h > this.cHeight && s.sy > 0 || s.y < 0 && s.sy < 0) {
-                    s.sy = -s.sy;
-                }
-            }
-            this.frame ++;
-         }
-      }
-    getPixel (x, y, returnType = 'object') {
-        const ctx = this.context;
-        const data = ctx.getImageData(x, y, 1, 1).data;
-        if (returnType === true) {
-            return data[3] > 0;
-        }
-        return {red: data[0], green: data[1], blue: data[2], alpha: data[3]}
-    };
-
 }
-
-export default Screen;
+export default Bouncing;

@@ -1,4 +1,4 @@
-import Screen from './Screen.js'
+import Bouncing from './classes/Bouncing.js'
 let screen;
 let collisions = 0;
   function onMouseMove(ev, canvas) {
@@ -21,7 +21,7 @@ let collisions = 0;
 }
   document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("canvas");
-    screen = new Screen(canvas, onCollision);
+    screen = new Bouncing(canvas, null, null, onCollision);
     screen.spritesAmount = 10;
     canvas.addEventListener("mousemove", function(event, canvas) {onMouseMove(event, canvas)});
     screen.init();
