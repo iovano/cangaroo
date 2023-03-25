@@ -53,7 +53,7 @@ class Screen {
         }
     }
     draw() {
-        if (this.canvas.getContext) {
+        if (this.canvas?.getContext) {
           const ctx = this.context;
           ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
