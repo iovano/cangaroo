@@ -1,39 +1,72 @@
 import Screen from "./Screen.js";
 class Bouncing extends Screen {
     collisionCallback = null;
-    constructor(canvas, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null) {
-        super(canvas, initSpriteCallback, drawSpriteCallback);
-        this.collisionDetectionCallback = this.collision;
+    /**
+     * 
+     * @param {HTMLElement} canvas 
+     * @param {Function} initSpriteCallback 
+     * @param {Function} drawSpriteCallback 
+     * @param {Function} collisionCallback 
+     * @param {Function} collisionCheckCallback 
+     */
+    constructor(canvas, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null, collisionCheckCallback = null) {
+        super(canvas, initSpriteCallback, drawSpriteCallback, collisionCheckCallback);
+        this.collisionDetectionCallback = this.internalCollisionCheck;
+        this.collisionCheckCallback = collisionCheckCallback;
         this.collisionCallback = collisionCallback;
     }
-    collision(spriteNum) {
+    /**
+     * 
+     * @param {int} spriteA 
+     * @param {int} spriteB 
+     * @param {int} direction (1 = horizontal, 2 = vertical, 3 = horizontal and vertical)
+     * @returns {boolean|undefined}
+     */
+    onCollisionDetected(spriteA, spriteB, direction = null) {
+        /* calls collisionCallback (if specified) and stops event Propagation if the callback returned "true" */
+        if (this.collisionCallback && this.collisionCallback(spriteA, spriteB, direction) === true) {
+            return true;
+        }
+        this.sprites[spriteA].r = Math.random()*255;
+        this.sprites[spriteA].g = Math.random()*255;
+        this.sprites[spriteA].b = Math.random()*255;
+        this.sprites[spriteA].a = 1;
+        if (spriteB) {
+            this.sprites[spriteB].r = Math.random()*255;
+            this.sprites[spriteB].g = Math.random()*255;
+            this.sprites[spriteB].b = Math.random()*255;
+            this.sprites[spriteB].a = 1;
+        }
+      }
+    /**
+     * 
+     * @param {int} spriteNum 
+     * @returns {boolean|undefined}
+     */
+    internalCollisionCheck(spriteNum) {
+        /* calls collisionCheckCallback (if specified) and event stops Propagation if the callback returned "true" */
+        if (this.collisionCheckCallback && this.collisionCheckCallback(spriteNum) === true) {
+            return true;
+        }
         let s = this.sprites[spriteNum]
         let collision = false;
         if (this.collisionDetectionMethod === 1) {
             if (this.getPixel(s.x,s.y,true) && s.sx < 0 || this.getPixel(s.x+s.w,s.y,true) && s.sx > 0) {
                 s.sx = -s.sx;
-                if (this.collisionCallback) {
-                    this.collisionCallback(spriteNum, null, "horizontal");
-                }
+                this.onCollisionDetected(spriteNum, null, 1);
             }
             if (this.getPixel(s.x,s.y,true) && s.sy < 0 || this.getPixel(s.x,s.y+s.h,true) && s.sx > 0) {
                 s.sy = -s.sy;
-                if (this.collisionCallback) {
-                    this.collisionCallback(spriteNum, null, "vertical");
-                }
+                this.onCollisionDetected(spriteNum, null, 2);
             }
             if (this.getPixel(s.x+s.w,s.y+s.h,true)) {
                 if (s.sy > 0) {
                     s.sy = -s.sy;
-                    if (this.collisionCallback) {
-                        this.collisionCallback(spriteNum, null, "vertical");
-                    }
+                    this.onCollisionDetected(spriteNum, null, 2);
                 }
                 if (s.sx > 0) {
                     s.sx = -s.sx;
-                    if (this.collisionCallback) {
-                        this.collisionCallback(spriteNum, null, "horizontal");
-                    }
+                    this.onCollisionDetected(spriteNum, null, 1);
                 }
             }   
         } else {
@@ -42,16 +75,19 @@ class Bouncing extends Screen {
                 let c = this.sprites[i];
                 if (s.x + s.w > c.x && s.x < c.x + c.w && s.y + s.h > c.y && s.y < c.y + c.h) {
                     this.rebound(spriteNum, i);
-                    if (this.collisionCallback) {
-                        this.collisionCallback(spriteNum, i);
-                    }
+                    this.onCollisionDetected(spriteNum, i, (s.x + s.w > c.x && s.x < c.x + c.w ? 1 : 0) + (s.y + s.h > c.y && s.y < c.y + c.h ? 2 : 0));
                 }
             }
         }
     }
-    rebound(o1, o2) {
-        let s1 = this.sprites[o1];
-        let s2 = this.sprites[o2];
+    /**
+     * 
+     * @param {int} spriteA 
+     * @param {int} spriteA
+     */
+    rebound(spriteA, spriteB) {
+        let s1 = this.sprites[spriteA];
+        let s2 = this.sprites[spriteB];
         // Define the parameters for the balls
         const ball1 = {
             mass: 1,
@@ -88,10 +124,10 @@ class Bouncing extends Screen {
             ball2.velocity[1] + (newV2 - v2) * direction[1]
         ];
         
-        this.sprites[o1].sx = newVelocity1[0];
-        this.sprites[o1].sy = newVelocity1[1];
-        this.sprites[o2].sx = newVelocity2[0];
-        this.sprites[o2].sy = newVelocity2[1];
+        this.sprites[spriteA].sx = newVelocity1[0];
+        this.sprites[spriteA].sy = newVelocity1[1];
+        this.sprites[spriteB].sx = newVelocity2[0];
+        this.sprites[spriteB].sy = newVelocity2[1];
  
     }
 }
