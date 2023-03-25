@@ -1,6 +1,7 @@
 import Screen from "./Screen.js";
 class Bouncing extends Screen {
     collisionCallback = null;
+    spritesAmount = 30;
     /**
      * 
      * @param {HTMLElement} canvas 
