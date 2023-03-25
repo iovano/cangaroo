@@ -1,5 +1,6 @@
 import Bouncing from './classes/Bouncing.js'
 import Screen from './classes/Screen.js';
+import Stars from './classes/Stars.js';
 let screen;
 let events = 0;
   function onMouseMove(ev, canvas) {
@@ -18,11 +19,10 @@ let events = 0;
     }    
     if (theme == 'bouncing') {
       screen = new Bouncing(canvas, "ball", null, null, onCollision);
-      screen.spritesAmount = 10;
     } else if (theme == 'standard') {
-      console.log(theme);
       screen = new Screen(canvas);
-      screen.spritesAmount = 20;
+    } else if (theme == 'stars') {
+      screen = new Stars(canvas, "ball");
     }
     screen.init();
     screen.run();
