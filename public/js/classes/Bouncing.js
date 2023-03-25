@@ -9,8 +9,8 @@ class Bouncing extends Screen {
      * @param {Function} collisionCallback 
      * @param {Function} collisionCheckCallback 
      */
-    constructor(canvas, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null, collisionCheckCallback = null) {
-        super(canvas, initSpriteCallback, drawSpriteCallback, collisionCheckCallback);
+    constructor(canvas, defaultSpriteShape = null, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null, collisionCheckCallback = null) {
+        super(canvas, defaultSpriteShape, initSpriteCallback, drawSpriteCallback, collisionCheckCallback);
         this.collisionDetectionCallback = this.internalCollisionCheck;
         this.collisionCheckCallback = collisionCheckCallback;
         this.collisionCallback = collisionCallback;

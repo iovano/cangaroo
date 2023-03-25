@@ -17,7 +17,7 @@ let events = 0;
       screen.destroy();
     }    
     if (theme == 'bouncing') {
-      screen = new Bouncing(canvas, null, null, onCollision);
+      screen = new Bouncing(canvas, "ball", null, null, onCollision);
       screen.spritesAmount = 10;
     } else if (theme == 'standard') {
       console.log(theme);

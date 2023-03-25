@@ -6,11 +6,13 @@ class Screen {
     frame = 0;
     sprites = [];
     spritesAmount = 50;
+    defaultSpriteShape = null;
     canvas = null;
     collisionDetectionCallback = null;
     context = null;
-    constructor(canvas, initSpriteCallback = null, drawSpriteCallback = null, collisionDetectionCallback = null) {
+    constructor(canvas, defaultSpriteShape = "rect", initSpriteCallback = null, drawSpriteCallback = null, collisionDetectionCallback = null) {
         this.canvas = canvas;
+        this.defaultSpriteShape = defaultSpriteShape;
         this.collisionDetectionCallback = collisionDetectionCallback;
         this.initSpriteCallback = initSpriteCallback;
         this.drawSpriteCallback = drawSpriteCallback;
@@ -21,12 +23,14 @@ class Screen {
         this.canvas = null;
         this.frame = 0;
     }
-    init(width = null, height = null) {
+    init(shape = null, width = null, height = null) {
+        if (!shape) shape = this.defaultSpriteShape;
         this.cWidth = width || canvas.width;
         this.cHeight = height || canvas.height;
         this.sprites = [];
         for (let i=0; i<this.spritesAmount; i++) {
             let sprite = new Sprite(
+                shape,
                 Math.random()*this.cWidth, 
                 Math.random()*this.cHeight, 
                 10, 
@@ -51,7 +55,6 @@ class Screen {
 
           for (let i in this.sprites) {
               let s = this.sprites[i];
-              ctx.fillStyle = "rgba("+s.r+", "+s.g+", "+s.b+", "+s.a+")";
               /* calls collisionCallback (if specified) and stops event Propagation if the callback returned "true" */
               if (this.collisionDetectionCallback && this.collisionDetectionCallback(i) === true) {
                   return true;
@@ -67,7 +70,7 @@ class Screen {
               if (this.drawSpriteCallback) {
                   this.drawSpriteCallback(s);
               }
-              ctx.fillRect(s.x, s.y, s.w, s.h);
+              s.draw(ctx);
           }
           this.frame ++;
        }
