@@ -1,12 +1,15 @@
 {
   "name": "@iovano/cangaroo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": {
     "url": "https://github.com/iovano/cangaroo.git",
     "type": "git"
   },
+  "exports": {
+    "./js": "./public/js/classes",
+    "./css": "./public/css"
+  },
   "author": "Timor Kodal",
   "license": "MIT"
-
 }
