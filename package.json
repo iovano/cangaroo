@@ -1,7 +1,7 @@
 {
   "name": "@iovano/cangaroo",
-  "version": "0.1.04",
-  "main": "index.js",
+  "version": "0.1.5",
+  "main": "app.js",
   "repository": {
     "url": "https://github.com/iovano/cangaroo.git",
     "type": "git"
@@ -9,11 +9,15 @@
   "exports": {
     "./Screen": "./public/js/classes/Screen.js",
     "./Bouncing": "./public/js/classes/Bouncing.js",
-    "./Stars": "./public/js/classes/Stars",
-    "./Boxes": "./public/js/classes/Boxes",
-    "./Matrix": "./public/js/classes/Matrix",
-    "./js": "./public/js/classes",
-    "./css": "./public/css"
+    "./Stars": "./public/js/classes/Stars.js",
+    "./Boxes": "./public/js/classes/Boxes.js",
+    "./Matrix": "./public/js/classes/Matrix.js",
+    "./Sprite": "./public/js/classes/Sprite.js",
+    "./js": "./public/js/classes/",
+    "./css": "./public/css/"
+  },
+  "imports": {
+
   },
   "author": "Timor Kodal",
   "license": "MIT"
