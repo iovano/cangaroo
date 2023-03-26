@@ -1,6 +1,6 @@
 {
   "name": "@iovano/cangaroo",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "app.js",
   "repository": {
     "url": "https://github.com/iovano/cangaroo.git",
@@ -13,8 +13,9 @@
     "./Boxes": "./public/js/classes/Boxes.js",
     "./Matrix": "./public/js/classes/Matrix.js",
     "./Sprite": "./public/js/classes/Sprite.js",
-    "./js": "./public/js/classes/",
-    "./css": "./public/css/"
+    "./classes/": "./public/js/classes/",
+    "./js/": "./public/js/classes/",
+    "./css/": "./public/css/"
   },
   "imports": {
 
