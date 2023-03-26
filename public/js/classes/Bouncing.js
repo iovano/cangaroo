@@ -10,8 +10,8 @@ class Bouncing extends Screen {
      * @param {Function} collisionCallback 
      * @param {Function} collisionCheckCallback 
      */
-    constructor(canvas, defaultSpriteShape = null, initSpriteCallback = null, drawSpriteCallback = null, collisionCallback = null, collisionCheckCallback = null) {
-        super(canvas, defaultSpriteShape, initSpriteCallback, drawSpriteCallback, collisionCheckCallback);
+    constructor(canvas, defaultSpriteShape = null, initSpriteCallback = null, drawSpriteCallback = null, escapeSpriteCallback = null, collisionCallback = null, collisionCheckCallback = null) {
+        super(canvas, defaultSpriteShape, initSpriteCallback, drawSpriteCallback, escapeSpriteCallback, collisionCheckCallback);
         this.collisionDetectionCallback = this.internalCollisionCheck;
         this.collisionCheckCallback = collisionCheckCallback;
         this.collisionCallback = collisionCallback;
@@ -52,6 +52,7 @@ class Bouncing extends Screen {
         let s = this.sprites[spriteNum]
         let collision = false;
         if (this.collisionDetectionMethod === 1) {
+            /* checks if there already is content at the location of the sprite to be drawn next */
             if (this.getPixel(s.x,s.y,true) && s.sx < 0 || this.getPixel(s.x+s.w,s.y,true) && s.sx > 0) {
                 s.sx = -s.sx;
                 this.onCollisionDetected(spriteNum, null, 1);
@@ -71,10 +72,11 @@ class Bouncing extends Screen {
                 }
             }   
         } else {
+            /* checks if the sprite´s bounding box overlaps with other sprites */
             for (let i in this.sprites) {
                 if (i === spriteNum) continue;
                 let c = this.sprites[i];
-                if (s.x + s.w > c.x && s.x < c.x + c.w && s.y + s.h > c.y && s.y < c.y + c.h) {
+                if (this.doSpritesCollide(s, c)) {
                     this.rebound(spriteNum, i);
                     this.onCollisionDetected(spriteNum, i, (s.x + s.w > c.x && s.x < c.x + c.w ? 1 : 0) + (s.y + s.h > c.y && s.y < c.y + c.h ? 2 : 0));
                 }
@@ -91,12 +93,12 @@ class Bouncing extends Screen {
         let s2 = this.sprites[spriteB];
         // Define the parameters for the balls
         const ball1 = {
-            mass: 1,
+            mass: s1.w*s1.h,
             position: [s1.x, s1.y],
             velocity: [s1.sx, s1.sy]
         };
         const ball2 = {
-            mass: 1,
+            mass: s2.w*s2.h,
             position: [s2.x, s2.y],
             velocity: [s2.sx, s2.sy]
         };

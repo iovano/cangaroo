@@ -1,6 +1,9 @@
 import Bouncing from './classes/Bouncing.js'
 import Screen from './classes/Screen.js';
 import Stars from './classes/Stars.js';
+import Matrix from './classes/Matrix.js';
+import Boxes from './classes/Boxes.js';
+
 let screen;
 let events = 0;
   function onMouseMove(ev, canvas) {
@@ -23,6 +26,10 @@ let events = 0;
       screen = new Screen(canvas);
     } else if (theme == 'stars') {
       screen = new Stars(canvas, "ball");
+    } else if (theme == 'matrix') {
+      screen = new Matrix(canvas, [0,1,2,3,4,5,6,7,8,9]);
+    } else if (theme == 'boxes') {
+      screen = new Boxes(canvas);
     }
     screen.init();
     screen.run();
