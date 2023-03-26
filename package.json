@@ -1,12 +1,17 @@
 {
   "name": "@iovano/cangaroo",
-  "version": "0.1.2",
+  "version": "0.1.04",
   "main": "index.js",
   "repository": {
     "url": "https://github.com/iovano/cangaroo.git",
     "type": "git"
   },
   "exports": {
+    "./Screen": "./public/js/classes/Screen.js",
+    "./Bouncing": "./public/js/classes/Bouncing.js",
+    "./Stars": "./public/js/classes/Stars",
+    "./Boxes": "./public/js/classes/Boxes",
+    "./Matrix": "./public/js/classes/Matrix",
     "./js": "./public/js/classes",
     "./css": "./public/css"
   },
