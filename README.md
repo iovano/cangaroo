@@ -1,5 +1,9 @@
 # cangaroo
-Collection of Frontend Elements
+This package provides a set of particle effects and animations based on pure javascript. You can use and edit them
+as you like. However, please credit the author if you use this library for public/commercial projects. Donations are welcome,
+too.
+
+If you would like to contribute to this package, please get in contact with us.
 
 # Build and Run Testing Environment (Docker)
 This bundle comes with a Dockerfile to build a node.js Webserver as a test environment in one go.

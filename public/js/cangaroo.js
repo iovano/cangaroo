@@ -3,6 +3,7 @@ import Screen from './classes/Screen.js';
 import Stars from './classes/Stars.js';
 import Matrix from './classes/Matrix.js';
 import Boxes from './classes/Boxes.js';
+import Bubbles from './classes/Bubbles.js';
 
 let screen;
 let events = 0;
@@ -30,6 +31,8 @@ let events = 0;
       screen = new Matrix(canvas, [0,1,2,3,4,5,6,7,8,9]);
     } else if (theme == 'boxes') {
       screen = new Boxes(canvas);
+    } else if (theme == 'bubbles') {
+      screen = new Bubbles(canvas);
     }
     screen.init();
     screen.run();
