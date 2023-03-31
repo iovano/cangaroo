@@ -22,7 +22,9 @@ class Sprite {
         context.fillStyle = "rgba("+this.r+", "+this.g+", "+this.b+", "+this.a+")";
         if (this.shape === "ball") {
             context.beginPath();
-            context.arc(this.x, this.y, this.w / 2, 0, 2 * Math.PI);
+            if (this.w >= 0) {
+                context.arc(this.x, this.y, this.w / 2, 0, 2 * Math.PI);
+            }
             context.fill();
         } else if (Array.isArray(this.shape)) {
             context.font = this.style;
