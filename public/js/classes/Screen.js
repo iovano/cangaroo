@@ -76,7 +76,7 @@ class Screen {
             this.sprites.push(sprite);
         }
     }
-    /**
+    /** 
      * calculates Position Range in relation to canvas dimensions
      */
     calculatePositionRange() {
@@ -100,9 +100,12 @@ class Screen {
      */
     new(sprite) {
         sprite.frame = 0;
-        sprite.x = Math.random()*(this.calculatedPositionRange.x[1] - this.calculatedPositionRange.x[0]) + this.calculatedPositionRange.x[0];
-        sprite.y = Math.random()*(this.calculatedPositionRange.y[1] - this.calculatedPositionRange.y[0]) + this.calculatedPositionRange.y[0]; 
-        if (this.calculatedPositionRange.grid) {
+        if (this.calculatedPositionRange?.x && this.calculatedPositionRange?.y) {
+            sprite.x = Math.random()*(this.calculatedPositionRange.x[1] - this.calculatedPositionRange.x[0]) + this.calculatedPositionRange.x[0];
+            sprite.y = Math.random()*(this.calculatedPositionRange.y[1] - this.calculatedPositionRange.y[0]) + this.calculatedPositionRange.y[0]; 
+    
+        }
+        if (this.calculatedPositionRange?.grid) {
             sprite.x = this.calculatedPositionRange.grid[0] ? Math.round(sprite.x / this.calculatedPositionRange.grid[0]) * this.calculatedPositionRange.grid[0] : Math.round(sprite.x / this.calculatedPositionRange.grid) * this.calculatedPositionRange.grid;
             sprite.y = this.calculatedPositionRange.grid[1] ? Math.round(sprite.y / this.calculatedPositionRange.grid[1]) * this.calculatedPositionRange.grid[1] : Math.round(sprite.x / this.calculatedPositionRange.grid) * this.calculatedPositionRange.grid;
         }
