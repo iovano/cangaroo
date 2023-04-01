@@ -8,6 +8,7 @@ class Bubbles extends Screen {
     phase = {duration: 30, pause: 0};
     direction = {x: -1, y: -1}
     defaultSpriteShape = "ball";
+    offset = {x: 0, y: 0, w: 0, h: 0, a: 1};
     rgbaRange = {r: [55, 255], g: [155, 255], b: [55, 255], a: [0.1, 0.5]}
     new(sprite) {
         super.new(sprite);
@@ -27,15 +28,15 @@ class Bubbles extends Screen {
         this.sprites = [];
         this.rows=0;
         this.cols=0;
-        for (let x=0; x<this.cWidth; x+=this.grid.x) {
-            for (let y=0; y<this.cHeight; y+=this.grid.y) {
+        for (let x=0; x<=this.cWidth; x+=this.grid.x) {
+            for (let y=0; y<=this.cHeight; y+=this.grid.y) {
                 let sprite = new Sprite(shape);
                 this.new(sprite);
-                sprite.x = this.direction.x > 0 ? x : this.cWidth - x;
-                sprite.y = this.direction.y > 0 ? y : this.cHeight - y;
-                sprite.w = 0;
-                sprite.h = 0;
-                sprite.a = 1;
+                sprite.x = this.offset.x + (this.direction.x > 0 ? x : this.cWidth - x);
+                sprite.y = this.offset.y + (this.direction.y > 0 ? y : this.cHeight - y);
+                sprite.w = this.offset.w;
+                sprite.h = this.offset.h;
+                sprite.a = this.offset.a;
                 sprite.delay = x / this.grid.x * Math.abs(this.direction.x) + y / this.grid.y * Math.abs(this.direction.y);
                 if (this.initSpriteCallback) {
                     this.initSpriteCallback(sprite);
