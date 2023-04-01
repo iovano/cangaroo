@@ -41,9 +41,33 @@ let events = 0;
   document.addEventListener("DOMContentLoaded", function () {
     start('bouncing');
     document.querySelectorAll('button.topic').forEach(
-      button =>
-        button.addEventListener("click", () => start(button.dataset.topic))
-
-
-    );
+      button => {
+          button.addEventListener("click", () => start(button.dataset.topic))
+      }
+      );
+    document.querySelectorAll('form#controls input').forEach(
+      input => {
+        const data = input.dataset;
+        const prop = data.property;
+        let relation = data.relation ?? "#canvas";
+        if (data.relation == 'screen') {
+          input.value = screen[prop];
+          input.addEventListener('change', () => {screen[prop]=input.value; screen.init();});
+        } else {
+          const relations = document.querySelectorAll(relation);
+          relations.forEach(el => {input.value = el[prop];});
+          input.addEventListener('change', (event) => {
+            relations.forEach( 
+              el => {
+                el[prop] = event.target.value;
+              }
+            );
+            console.log(event.target.value+" "+(relation)+"."+data.property);
+            screen.init();
+          }
+          );
+  
+        }
+      }
+    )
   });

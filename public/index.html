@@ -14,8 +14,16 @@
 <button class="topic" data-topic="boxes">Boxes</button>
 <button class="topic" data-topic="bubbles">Bubbles</button>
 <div>
-  <canvas id="canvas" width="250" height="250">
+  <canvas id="canvas" width="500" height="250">
   </canvas>
 </div>
+<form id="controls" action="javascript:void(0);">
+  <label for="width">width</label>
+  <input name="width" type="text" data-relation = '#canvas' data-property = 'width' />
+  <label for="height">height</label>
+  <input name="height" type="text" data-relation = '#canvas' data-property = 'height' />
+  <label for="sprites">sprites</label>
+  <input name="sprites" type="text" data-relation = 'screen' data-property = 'spritesAmount' />
+</form>
 <span id="trackedEventName">Events</span> <span id="trackedEventAmount" class="highlight"></span>
 </html>

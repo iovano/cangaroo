@@ -21,3 +21,24 @@ canvas {
     color: #faf;
     font-weight: 400;
 }
+form#controls {
+    width: 20em;
+    display: flex;
+    flex-wrap: wrap;
+}
+form#controls label {
+    width: 10em;
+    padding-top: 0.4em;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 0.2em;
+}
+form#controls input {
+    width: 10em;
+    background: rgba(255,100,255,0.5);
+    border: 0;
+    color: #fff;
+    border-radius: 0.5em;
+    padding: 1em 1em;
+    margin-bottom: 0.2em;
+
+}

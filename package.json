@@ -1,6 +1,6 @@
 {
   "name": "@iovano/cangaroo",
-  "version": "0.1.11",
+  "version": "0.2.1",
   "main": "app.js",
   "keywords": ["canvas", "motion", "animation", "starfield", "matrix", "sprite", "boxes", "collision"],
   "homepage": "https://iovano.de/cangaroo/",
