@@ -5,7 +5,7 @@ class Bubbles extends Screen {
     speed = 1;
     grid = {x: 20, y: 20};
     cyclesMax = 0;
-    phase = {duration: 30, pause: 0};
+    phase = {duration: 30, sustain: 20, pause: 0};
     direction = {x: -1, y: -1}
     defaultSpriteShape = "ball";
     offset = {x: 0, y: 0, w: 0, h: 0, a: 1};
@@ -28,6 +28,7 @@ class Bubbles extends Screen {
         this.sprites = [];
         this.rows=0;
         this.cols=0;
+        this.maxDelay=0;
         for (let x=0; x<=this.cWidth; x+=this.grid.x) {
             for (let y=0; y<=this.cHeight; y+=this.grid.y) {
                 let sprite = new Sprite(shape);
@@ -41,8 +42,11 @@ class Bubbles extends Screen {
                 if (this.initSpriteCallback) {
                     this.initSpriteCallback(sprite);
                 }
+                if (sprite.delay > this.maxDelay) {
+                    this.maxDelay = sprite.delay;
+                }
                 this.sprites.push(sprite);
-                this.cows++;
+                this.cols++;
             }
             this.rows++;
         }
@@ -53,9 +57,10 @@ class Bubbles extends Screen {
     moveSprite(sprite) {
         if (!this.cyclesMax || sprite.cycle < this.cyclesMax) {
             if (sprite.frame > sprite.delay) {
-                sprite.w += sprite.frame < this.phase.duration + sprite.delay ? this.speed : -this.speed;
-                sprite.h += sprite.frame < this.phase.duration + sprite.delay ? this.speed : -this.speed;
-                if (sprite.frame > Math.max(this.rows,this.cols) * 2 + this.phase.duration * 2 + this.phase.pause) {
+                let scale = (sprite.frame < this.phase.duration + sprite.delay) ? this.speed : (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain) ? 0 : -this.speed;;
+                sprite.w += scale;
+                sprite.h += scale;
+                if (sprite.frame > this.maxDelay + this.phase.duration * 2 + this.phase.sustain ?? 0 + this.phase.pause) {
                     sprite.frame = 0;
                     sprite.w = sprite.h = 0;
                     sprite.cycle += 1;
