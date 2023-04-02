@@ -130,9 +130,11 @@ class Screen {
      * @param {Sprite} sprite 
      */
     moveSprite(sprite) {
-        sprite.x += sprite.sx;
-        sprite.y += sprite.sy;
-        this.doesSpriteEscape(sprite);
+        if (!sprite.static) {
+            sprite.x += sprite.sx;
+            sprite.y += sprite.sy;
+            this.doesSpriteEscape(sprite);
+        }
     }
     /**
      * checks whether a sprite escapes the given boundaries
@@ -189,15 +191,15 @@ class Screen {
         if (this.canvas?.getContext) {
           const ctx = this.context;
           ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
           for (let i in this.sprites) {
               let sprite = this.sprites[i];
               /* calls collisionCallback (if specified) and stops event Propagation if the callback returned "true" */
               if (this.collisionDetectionCallback && this.collisionDetectionCallback(i) === true) {
                 return true;
               }
-
-              this.moveSprite(sprite);
+              if (sprite.isStatic() === false) {
+                this.moveSprite(sprite);
+              }
               if (this.drawSpriteCallback) {
                   this.drawSpriteCallback(sprite);
               }
@@ -228,6 +230,19 @@ class Screen {
         }
         return {red: data[0], green: data[1], blue: data[2], alpha: data[3]}
     };
+    addImage(src, x = 0, y = 0, width = undefined, height = undefined, fixed = true, position = -1) {
+        const img = new Image(width, height);
+        img.src = src;
+        const sprite = new Sprite(img);
+        sprite.sx = sprite.sy = 0;
+        sprite.setStatic(fixed);
+        if (position == -1) {
+            this.sprites.push(sprite);
+        } else {
+            this.sprites.splice(position, 0, sprite);
+        }
+        return sprite;
+    }
 
 }
 
