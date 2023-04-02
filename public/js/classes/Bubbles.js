@@ -5,7 +5,7 @@ class Bubbles extends Screen {
     speed = 1;
     grid = {x: 20, y: 20};
     cyclesMax = 0;
-    phase = {duration: 30, sustain: 20, pause: 0};
+    phase = {duration: 30, sustain: 50, pause: 0}; /* sustain === true prevents fadeout */
     direction = {x: -1, y: -1}
     defaultSpriteShape = "ball";
     offset = {x: 0, y: 0, w: 0, h: 0, a: 1};
@@ -57,10 +57,10 @@ class Bubbles extends Screen {
     moveSprite(sprite) {
         if (!this.cyclesMax || sprite.cycle < this.cyclesMax) {
             if (sprite.frame > sprite.delay) {
-                let scale = (sprite.frame < this.phase.duration + sprite.delay) ? this.speed : (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain) ? 0 : -this.speed;;
+                let scale = (sprite.frame < this.phase.duration + sprite.delay) ? this.speed : (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain || this.phase.sustain === true) ? 0 : -this.speed;;
                 sprite.w += scale;
                 sprite.h += scale;
-                if (sprite.frame > this.maxDelay + this.phase.duration * 2 + this.phase.sustain ?? 0 + this.phase.pause) {
+                if (this.phase.sustain !== true && (sprite.frame > this.maxDelay + this.phase.duration * 2 + this.phase.sustain ?? 0 + this.phase.pause)) {
                     sprite.frame = 0;
                     sprite.w = sprite.h = 0;
                     sprite.cycle += 1;
