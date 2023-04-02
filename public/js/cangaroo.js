@@ -35,6 +35,9 @@ let events = 0;
       screen = new Bubbles(canvas);
     }
     screen.init();
+    if (['bubbles'].indexOf(theme) !== -1) {
+      screen.addImage("image/example.png").blendMode = 'source-in';
+    };
     screen.run();
   }
   window.startTheme = start;
