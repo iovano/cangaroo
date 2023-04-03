@@ -57,9 +57,11 @@ class Bubbles extends Screen {
         super.update();
         if (this.stats.asc + this.stats.desc > 0) {
             this.cycleCompleted = false;
-        } else if (this.onCycleCompleted && this.cycleCompleted === false) {
-            this.onCycleCompleted(this.stats);
-            this.cycleCompleted = this.stats.max > 0 ? 1 : 2;
+        } else if (this.cycleCompleted === false) {
+            if (this.onCycleCompleted) {
+                this.onCycleCompleted(this.stats);
+            }
+            this.cycleCompleted = (this.stats.max > 0) ? 1 : 2;
         }
     }
     moveSprite(sprite) {
@@ -70,7 +72,7 @@ class Bubbles extends Screen {
                     sprite.w += this.speed;
                     sprite.h += this.speed;
                     this.stats.asc ++;
-                } else if (sprite.frame < this.phase.duration + sprite.delay + (this.phase.sustain === "sync"?this.maxDelay:this.phase.sustain ?? 0)) {
+                } else if (sprite.frame < this.phase.duration + sprite.delay + (this.phase.sustain === "sync"?this.maxDelay:(this.phase.sustain ?? 0))) {
                     /* sustain */
                     this.stats.max ++;
                 } else {
