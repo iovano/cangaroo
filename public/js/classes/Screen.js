@@ -40,6 +40,7 @@ class Screen {
     destroy() {
         const ctx = this.context;
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.run = null;
         this.sprites = [];
         this.canvas = null;
         this.frame = 0;
@@ -213,7 +214,7 @@ class Screen {
      */
     run() {
         this.update();
-        setTimeout(() => {this.run()}, 20)
+        setTimeout(() => {if (this.run) this.run()}, 20)
     }
     /**
      * retrieves the rgba value of a given pixel (or true/false depending on whether pixel´s alpha is > 0)
