@@ -11,6 +11,7 @@ class Screen {
     context = null;
     infinity = true;
     warmupCycles = 0;
+    suspended = false;
 
     calculatedPositionRange = null;
     positionRange = {x: [0, "100%"], y: [0, "100%"]};
@@ -189,7 +190,7 @@ class Screen {
      * @returns 
      */
     update() {
-        if (this.canvas?.getContext) {
+        if (this.canvas?.getContext && !this.suspended) {
           const ctx = this.context;
           ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
           for (let i in this.sprites) {
@@ -205,8 +206,8 @@ class Screen {
                   this.drawSpriteCallback(sprite);
               }
               sprite.draw(ctx);
+              this.frame ++;
           }
-          this.frame ++;
        }
     }
     /**
@@ -231,8 +232,17 @@ class Screen {
         }
         return {red: data[0], green: data[1], blue: data[2], alpha: data[3]}
     };
+    changeImage(sprite, src) {
+        this.suspended = true;
+        sprite.shape.src = src;
+    }
     addImage(src, x = 0, y = 0, width = undefined, height = undefined, fixed = true, position = -1) {
+        this.suspended = true;
+        const that = this;
         const img = new Image(width, height);
+        img.onload = function () {
+            that.suspended = false;
+        };
         img.src = src;
         const sprite = new Sprite(img);
         sprite.sx = sprite.sy = 0;
