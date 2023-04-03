@@ -3,6 +3,7 @@ import Sprite from "./Sprite.js";
 class Bubbles extends Screen {
     collisionCallback = null;
     speed = 1;
+    frame = 0;
     grid = {x: 20, y: 20};
     cyclesMax = 0;
     phase = {duration: 30, sustain: 50, pause: 0}; /* sustain === true prevents fadeout */
@@ -10,6 +11,8 @@ class Bubbles extends Screen {
     defaultSpriteShape = "ball";
     offset = {x: 0, y: 0, w: 0, h: 0, a: 1};
     rgbaRange = {r: [55, 255], g: [155, 255], b: [55, 255], a: [0.1, 0.5]}
+    onCycleCompleted = null;
+    cycleCompleted = true;
     new(sprite) {
         super.new(sprite);
         sprite.frame = 0;
@@ -26,8 +29,7 @@ class Bubbles extends Screen {
         this.cWidth = width || canvas.width;
         this.cHeight = height || canvas.height;
         this.sprites = [];
-        this.rows=0;
-        this.cols=0;
+        this.stats = {rows: Math.floor(this.cWidth / this.grid.x) + 1, cols: Math.floor(this.cHeight / this.grid.y) + 1};
         this.maxDelay=0;
         for (let x=0; x<=this.cWidth; x+=this.grid.x) {
             for (let y=0; y<=this.cHeight; y+=this.grid.y) {
@@ -38,7 +40,7 @@ class Bubbles extends Screen {
                 sprite.w = this.offset.w;
                 sprite.h = this.offset.h;
                 sprite.a = this.offset.a;
-                sprite.delay = x / this.grid.x * Math.abs(this.direction.x) + y / this.grid.y * Math.abs(this.direction.y);
+                sprite.delay = x / this.grid.x * Math.abs(this.direction.x) + y / this.grid.y * Math.abs(this.direction.y) + 1;
                 if (this.initSpriteCallback) {
                     this.initSpriteCallback(sprite);
                 }
@@ -46,20 +48,41 @@ class Bubbles extends Screen {
                     this.maxDelay = sprite.delay;
                 }
                 this.sprites.push(sprite);
-                this.cols++;
             }
-            this.rows++;
         }
-        if (!this.cycleDuration) {
-            this.cycleDuration = this.cWidth / this.grid.x * this.cHeight / this.grid.y * 2;
+    }
+    update() {
+        this.frame ++;
+        this.stats.asc = this.stats.max = this.stats.desc = this.stats.min = 0;
+        super.update();
+        if (this.stats.asc + this.stats.desc > 0) {
+            this.cycleCompleted = false;
+        } else if (this.onCycleCompleted && this.cycleCompleted === false) {
+            this.onCycleCompleted(this.stats);
+            this.cycleCompleted = true;
         }
     }
     moveSprite(sprite) {
         if (!this.cyclesMax || sprite.cycle < this.cyclesMax) {
             if (sprite.frame > sprite.delay) {
-                let scale = (sprite.frame < this.phase.duration + sprite.delay) ? this.speed : (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain || this.phase.sustain === true) ? 0 : -this.speed;;
-                sprite.w += scale;
-                sprite.h += scale;
+                if (sprite.frame < this.phase.duration + sprite.delay) {
+                    /* grow */
+                    sprite.w += this.speed;
+                    sprite.h += this.speed;
+                    this.stats.asc ++;
+                } else if (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain || this.phase.sustain === true) {
+                    /* sustain */
+                    this.stats.max ++;
+                } else {
+                    if (sprite.w >= 0 && sprite.h > 0) {
+                        /* shrink */
+                        sprite.w -= this.speed;
+                        sprite.h -= this.speed;
+                        this.stats.desc ++;
+                    } else {
+                        this.stats.min ++;
+                    }
+                }
                 if (this.phase.sustain !== true && (sprite.frame > this.maxDelay + this.phase.duration * 2 + this.phase.sustain ?? 0 + this.phase.pause)) {
                     sprite.frame = 0;
                     sprite.w = sprite.h = 0;
