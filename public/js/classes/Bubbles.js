@@ -6,7 +6,7 @@ class Bubbles extends Screen {
     frame = 0;
     grid = {x: 20, y: 20};
     cyclesMax = 0;
-    phase = {duration: 30, sustain: 50, pause: 0}; /* sustain === true prevents fadeout */
+    phase = {duration: 30, sustain: "sync", pause: 0}; /* sustain === true prevents fadeout */
     direction = {x: -1, y: -1}
     defaultSpriteShape = "ball";
     offset = {x: 0, y: 0, w: 0, h: 0, a: 1};
@@ -59,7 +59,7 @@ class Bubbles extends Screen {
             this.cycleCompleted = false;
         } else if (this.onCycleCompleted && this.cycleCompleted === false) {
             this.onCycleCompleted(this.stats);
-            this.cycleCompleted = true;
+            this.cycleCompleted = this.stats.max > 0 ? 1 : 2;
         }
     }
     moveSprite(sprite) {
@@ -70,7 +70,7 @@ class Bubbles extends Screen {
                     sprite.w += this.speed;
                     sprite.h += this.speed;
                     this.stats.asc ++;
-                } else if (sprite.frame < this.phase.duration + sprite.delay + this.phase.sustain || this.phase.sustain === true) {
+                } else if (sprite.frame < this.phase.duration + sprite.delay + (this.phase.sustain === "sync"?this.maxDelay:this.phase.sustain ?? 0)) {
                     /* sustain */
                     this.stats.max ++;
                 } else {
@@ -83,7 +83,7 @@ class Bubbles extends Screen {
                         this.stats.min ++;
                     }
                 }
-                if (this.phase.sustain !== true && (sprite.frame > this.maxDelay + this.phase.duration * 2 + this.phase.sustain ?? 0 + this.phase.pause)) {
+                if (this.cycleCompleted === 2) {
                     sprite.frame = 0;
                     sprite.w = sprite.h = 0;
                     sprite.cycle += 1;
