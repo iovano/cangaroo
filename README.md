@@ -8,7 +8,13 @@ If you would like to contribute to this package, please get in contact with us.
 # Build and Run Testing Environment (Docker)
 This bundle comes with a Dockerfile to build a node.js Webserver as a test environment in one go.
 
-In order to start the docker container, use this command from the cloned root directory of this repository: 
+In order to use the docker container, you have to build it first. You can do so by executing this command from the root directory of this repository:
+
+```docker build . -t cangaroo```
+
+This will create and build the application container and name the resulting image "chameleon"
+
+Afterwards, use this command: 
 
 ```docker run -p 3000:3000 -v $(pwd)/public:/app/public cangaroo```
 
