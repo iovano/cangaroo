@@ -36,8 +36,7 @@ let events = 0;
     }
     screen.init();
     if (['bubbles'].indexOf(theme) !== -1) {
-      screen.addImage("image/example2.jpg").blendMode = 'source-in';
-      screen.onCycleCompleted = (stats) => {console.log("cycle Completed "+(stats.max > 0))};
+      screen.addImage("images/example2.jpg").blendMode = 'source-in';
     };
     screen.run();
   }
