@@ -7,15 +7,12 @@ let currentImage = 0;
 function onCycleCompleted(stats) {
   currentImage ++;
   if (stats.max === 0) {
-    console.log("min");
     screen.changeImage(blendImage, images[(currentImage) % images.length]);
     canvas.style.background="url("+images[(currentImage + images.length - 1) % images.length]+")";
   } else {
-    console.log("max");
     screen.changeImage(blendImage, images[(currentImage - 1) % images.length]);
     canvas.style.background="url("+images[(currentImage) % images.length]+")";
   }
-  console.log("cycle Completed "+(stats.max > 0));
 }
 function start(theme) {
   const canvas = document.getElementById("canvas");
