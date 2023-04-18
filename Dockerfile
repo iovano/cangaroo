@@ -1,5 +1,5 @@
 # Use the official Node.js 14 image as the base image
-FROM node:latest
+FROM node:latest AS cangaroo
 
 # Set the working directory inside the container
 WORKDIR /app
